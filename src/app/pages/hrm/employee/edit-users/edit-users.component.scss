@@ -1,0 +1,40 @@
+.input-icons i { 
+    position: absolute; 
+    right: 28px;
+    top: 38px;
+} 
+  
+.input-icons { 
+    width: 100%; 
+    margin-bottom: 10px; 
+} 
+  
+.icon { 
+    padding: 10px; 
+    min-width: 40px; 
+} 
+  
+.input-field { 
+    width: 100%; 
+    padding: 10px; 
+    text-align: center; 
+} 
+
+.content-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    background: var(--app-background-color);
+    padding: 2rem;
+    margin-top: 5%;
+    position: absolute;
+    left: 220px;
+    width: calc(100% - 230px);
+  }
+  @media (min-width: 200px) and (max-width: 1000px) {
+    .content-wrapper {
+      margin-top: 20%;
+      left: 0;
+      width: 100%;
+      padding: 0;
+    }
+  }

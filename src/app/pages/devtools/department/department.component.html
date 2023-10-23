@@ -1,0 +1,312 @@
+<div class="content-wrapper">
+    <div class="row justify-content-between mb-5">
+        <div class="col-md-6 col-12 mb-2">
+            <h2>Departments</h2>
+        </div>
+        <div class="col-md-6 col-12 mb-2">
+            <div class="mx-2 single-filter single-search-wrapper">
+                <div class="form-group form-group-with-search d-flex align-items-center"
+                    (keyup)="applyFilter($event.target.value)">
+                    <span class="form-control-feedback">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-search">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" placeholder="Search" class="form-control"
+                        (keyup)="applyFilter($event.target.value)">
+                </div>
+            </div>
+
+            <div class="mb-3 mx-3 float-md-right float-right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                    *ngIf="IsSuperAdmin()" (click)="addDepartments()">
+                    Add Departments
+                </button>
+            </div>
+        </div>
+        <!-- <div class="col-sm-12 col-md-1"></div> -->
+    </div>
+    <div>
+        <!-- Table for Admin -->
+        <div class="card-body p-0" *ngIf="IsSuperAdmin()">
+            <div class="datatable">
+                <div>
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
+                            <td mat-cell *matCellDef="let row" class="datatable-td text-capitalize">{{row.name}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Manager">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Manager</th>
+                            <td mat-cell *matCellDef="let row" class="text-capitalize">
+                                {{row.full_Name}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description </th>
+                            <td mat-cell *matCellDef="let row" style="width:0.8rem;" class="text-capitalize">
+                                {{row.description}}</td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="Created">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created </th>
+                            <td mat-cell *matCellDef="let row" class="datatable-td">
+                                {{row.dts | date:'dd/MM/yyyy'}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Actions">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div>
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                                        rel="tooltip" (click)="getById(row.id)" style="padding: 2px 7px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+                                            width="30px" height="30px" fill-rule="nonzero">
+                                            <g fill="#fff" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                                stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                                stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                                font-weight="none" font-size="none" text-anchor="none"
+                                                style="mix-blend-mode: normal">
+                                                <g transform="scale(3.55556,3.55556)">
+                                                    <path
+                                                        d="M38.406,22.234l11.36,11.36l-20.982,20.982l-12.876,4.307c-1.725,0.577 -3.367,-1.065 -2.791,-2.79l4.307,-12.876zM41.234,19.406l5.234,-5.234c1.562,-1.562 4.095,-1.562 5.657,0l5.703,5.703c1.562,1.562 1.562,4.095 0,5.657l-5.234,5.234z">
+                                                    </path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </button>&nbsp;
+                                    <button class="btn btn-danger" (click)="delete(row.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+                                            width="23px" height="23px" fill-rule="nonzero">
+                                            <g fill="#fff" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                                stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                                stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                                font-weight="none" font-size="none" text-anchor="none"
+                                                style="mix-blend-mode: normal">
+                                                <g transform="scale(8.53333,8.53333)">
+                                                    <path
+                                                        d="M13,3c-0.26757,-0.00363 -0.52543,0.10012 -0.71593,0.28805c-0.1905,0.18793 -0.29774,0.44436 -0.29774,0.71195h-5.98633c-0.36064,-0.0051 -0.69608,0.18438 -0.87789,0.49587c-0.18181,0.3115 -0.18181,0.69676 0,1.00825c0.18181,0.3115 0.51725,0.50097 0.87789,0.49587h18c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587h-5.98633c0,-0.26759 -0.10724,-0.52403 -0.29774,-0.71195c-0.1905,-0.18793 -0.44836,-0.29168 -0.71593,-0.28805zM6,8v16c0,1.105 0.895,2 2,2h14c1.105,0 2,-0.895 2,-2v-16z">
+                                                    </path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter </td>
+                        </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users">
+                    </mat-paginator>
+                </div>
+
+                <div class="mt-primary">
+                    <div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between">
+                            <!---->
+                            <nav style="display: none;">
+                                <ul class="pagination justify-content-center justify-content-md-end mb-0">
+                                    <li class="page-item disabled"><a href="#" aria-label="Previous"
+                                            class="page-link border-0"><svg xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-arrow-left">
+                                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                                <polyline points="12 19 5 12 12 5">
+                                                </polyline>
+                                            </svg></a></li>
+                                    <li class="page-item">
+                                        <a href="#" class="page-link border-0 active disabled">1</a>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <a href="#" aria-label="Next" class="page-link border-0 align-content-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-arrow-right menu-arrow">
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                <polyline points="12 5 19 12 12 19">
+                                                </polyline>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table for Manager & Employee -->
+        <div class="card-body p-0" *ngIf="IsManagerAndEmp()">
+            <div class="datatable" style="max-width:100%; overflow-x: scroll;">
+                <div>
+                    <table mat-table [dataSource]="dataSource2" matSort>
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
+                            <td mat-cell *matCellDef="let row" class="datatable-td text-capitalize">{{row.name}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Manager">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Manager</th>
+                            <td mat-cell *matCellDef="let row" class="text-capitalize">
+                                {{row.full_Name}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description </th>
+                            <td mat-cell *matCellDef="let row" style="width:0.8rem;" class="text-capitalize">
+                                {{row.description}}</td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="Created">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created </th>
+                            <td mat-cell *matCellDef="let row" class="datatable-td">
+                                {{row.dts | date:'dd/MM/yyyy'}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter </td>
+                        </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users">
+                    </mat-paginator>
+                </div>
+
+                <div class="mt-primary">
+                    <div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between">
+                            <!---->
+                            <nav style="display: none;">
+                                <ul class="pagination justify-content-center justify-content-md-end mb-0">
+                                    <li class="page-item disabled"><a href="#" aria-label="Previous"
+                                            class="page-link border-0"><svg xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-arrow-left">
+                                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                                <polyline points="12 19 5 12 12 5">
+                                                </polyline>
+                                            </svg></a></li>
+                                    <li class="page-item">
+                                        <a href="#" class="page-link border-0 active disabled">1</a>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <a href="#" aria-label="Next" class="page-link border-0 align-content-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-arrow-right menu-arrow">
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                <polyline points="12 5 19 12 12 19">
+                                                </polyline>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        style="display: block; background: #0000008c;" *ngIf="ModalOpen">
+        <div class="modal-dialog modal-lg">
+            <div role="document" class="modal-dialog modal-dialog-top modal-default modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Department</h4>
+                        <button type="button" aria-label="Close" data-dismiss="modal" class="close outline-none"
+                            (click)="cancel()">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body custom-scrollbar undefined">
+                        <form [formGroup]="departmentForm" autocomplete="off" aria-autocomplete="none">
+                            <div class="form-group" placeholder="Enter name " required="required">
+                                <label>Department Name</label>
+                                <small class="text-muted font-italic"></small>
+                                <div>
+                                    <input type="text" placeholder="Enter name" autocomplete="false"
+                                        class="form-control" formControlName="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Manager</label>
+                                <small class="text-muted font-italic"></small>
+                                <div>
+                                    <select class="form-control" id="exampleFormControlSelect1"
+                                        formControlName="user_Id">
+                                        <option value="0">--Select--</option>
+                                        <option *ngFor="let obj of manager" value="{{ obj.user_Id }}">
+                                            {{ obj?.full_Name }}
+                                        </option>
+                                    </select>
+                                    <!---->
+                                </div>
+                            </div>
+
+                            <!---->
+                            <div class="form-group" placeholder="Add description here">
+                                <label>Description</label>
+                                <small class="text-muted font-italic"></small>
+                                <div>
+                                    <textarea type="textarea" placeholder="Add description here" s
+                                        class="custom-scrollbar" formControlName="description"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-secondary mr-2" (click)="cancel()">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="submit" class="btn text-center btn-primary" (click)="SaveDepartments()">
+                            <span class="w-100">Save</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+.scanner {
+  width: 100%;
+  max-width: 557px;
+  height: auto;
+}
+.scanner-box{
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  place-content: center;
+}
+.data, .async {
+  display: block;
+  margin-top: 10px;
+}
+
+
+// .animation {
+//   width: 558px;
+//   height: 16px;
+//   background-color: rgba(0, 0, 0, 0.6);
+//   position: absolute;
+//   top: 50%; /* Initial position */
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   animation: moveUpDown 2s infinite linear;
+// }
+
+// @keyframes moveUpDown {
+//   0%, 100% {
+//     top: 50%; /* Start and end positions */
+//   }
+//   50% {
+//     top: 20%; /* Middle position (adjust this as needed) */
+//   }
+// }

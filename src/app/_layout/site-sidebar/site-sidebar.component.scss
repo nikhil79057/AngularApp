@@ -1,0 +1,47 @@
+.footer-fixed-ui {
+  position: fixed;
+  bottom: 0px;
+  background: #fff;
+}
+
+.nav-caret:after {
+  top: 50%;
+  position: absolute;
+}
+
+a.active {
+  color: #b4e1ff !important;
+}
+
+// @media (max-width: 991.98px){
+// .page-sidenav {
+//     width: 100% !important;
+//     height: 100% !important;
+//     top: 0 !important;
+//     /* position: fixed; */
+//     z-index: 1050;
+//     /* display: none; */
+//     opactiy: 0;
+//     left: 0;
+//     background: transparent !important;
+// }
+
+// .sidebar-offcanvas.active {
+//   left: 0;
+//   box-shadow: 0 5px 10px rgb(0 0 0 / 50%);
+// }
+// }
+.sidenav {
+  margin: 0rem;
+  pointer-events: inherit;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+@media (min-width: 200px) and (max-width: 990px) {
+  .sidenav {
+    margin-top: 4.9rem;
+  }
+}

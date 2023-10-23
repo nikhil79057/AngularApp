@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+th {
+    width: 15%;
+    font-weight: 900;
+    font-size: .935rem !important;
+}
+
+td {
+    width: 15%;
+}
+
+.content-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    background: var(--app-background-color);
+    padding: 2rem;
+    margin-top: 5%;
+    position: absolute;
+     left: 220px; 
+     width: calc(100% - 230px);
+  }
+  @media (min-width: 200px) and (max-width: 1000px) {
+    .content-wrapper {
+      margin-top: 15%;
+      left: 0;
+      width: 100%;
+    }
+  }

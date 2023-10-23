@@ -1,0 +1,23 @@
+
+
+<div class="Grid-box" >
+    <div class="cont">
+        <div class="form sign-in">
+           <img src="assets/Logo/Square3.png" id="qr-img" alt="login form"
+                style="border-radius: 1rem 0 0 1rem;" />
+            <p class="text-center welcome-text-para">Scan here for checkin</p>
+            
+            <div *ngIf="qrtdata">
+                <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="qrtdata"
+                qrc-class = "bshadow" ></ngx-qrcode>
+                <!-- <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="'check-in-code'"></ngx-qrcode> -->
+            </div>
+            <!-- <div *ngIf="!qrtdata">
+                <h1>Next refresh in: {{ countdown }}</h1>
+            </div> -->
+
+        </div>
+    </div>
+</div>
+
+    <!-- My Qr code end-->

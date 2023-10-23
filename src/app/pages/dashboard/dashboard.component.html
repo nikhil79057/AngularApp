@@ -1,0 +1,408 @@
+<div class="content-wrapper">
+  <h2>Dashboard</h2><br />
+
+  <div *ngIf="IsSuperAdmin()">
+    <div class="position-relative">
+      <div class="row mb-primary">
+        <div class="col-sm-6 col-lg-3 mb-4 mb-lg-0">
+          <div style="cursor:pointer;" [routerLink]="['/hrm/employees']">
+            <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget  border-0">
+              <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-user">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="widget-data">
+                <h6 style="font-size:1rem;">{{EmployeeList}}</h6>
+                <p>Employees</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3 mb-4 mb-lg-0">
+          <div style="cursor:pointer;" [routerLink]="['/department']">
+            <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget  border-0">
+              <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-home">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </div>
+              <div class="widget-data">
+                <h6 style="font-size:1rem;">{{DepartmentList}}</h6>
+                <p>Departments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3 mb-4 mb-sm-0">
+          <div style="cursor:pointer;" [routerLink]="['/hrm/MyLeave']">
+            <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget border-0">
+              <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="feather feather-edit">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+                  </path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+                  </path>
+                </svg>
+              </div>
+              <div class="widget-data">
+                <h6 style="font-size:1rem;">{{LeaveReq}}</h6>
+                <p>Leave requests</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div>
+            <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget border-0"
+              style="cursor: pointer;">
+              <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-user-x">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="18" y1="8" x2="23" y2="13"></line>
+                  <line x1="23" y1="8" x2="18" y2="13"></line>
+                </svg>
+              </div>
+              <div class="widget-data">
+                <h6 style="font-size:1rem;">{{People_On_WeekOff?.length}}</h6>
+                <p>On leave today</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-9 mb-4 mb-md-0">
+        <div class="card card-with-shadow border-0 h-100 min-height-350">
+          <div class="row justify-content-center card-header text-center">
+            <div class="col-md-4 col-10 mb-4">
+              <h5 class="card-title text-capitalize mb-0" style="font-size:1.25rem;">Admin statistics</h5>
+            </div>
+            <div class="col-md-8 col-8">
+              <ul class="nav nav-pills mb-3 float-right" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab"
+                    aria-controls="pills-all" aria-selected="true" (click)="getleaveStatisticsToday()">Today</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                    aria-controls="pills-profile" aria-selected="false" (click)="getleaveStatisticsWeek()">This week</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                    aria-controls="pills-contact" aria-selected="false" (click)="getleaveStatisticsMonth()">This
+                    Month</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+              <div class="row justify-content-around align-items-center">
+                <div class="col-lg-5 col-10 mb-4" *ngFor="let list of Leave_Info_Admin ">
+                  <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget  border-0">
+                    <div class="icon-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-user-x">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="8" x2="23" y2="13"></line>
+                        <line x1="23" y1="8" x2="18" y2="13"></line>
+                      </svg>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="text-size-13 mb-0">{{list.leave_type}}</h4>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Leave
+                        <span class="float-right text-size-18" style="color: black;">{{list?.empOnLeave}}</span>
+                      </h5>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Requests <span
+                          class="float-right text-size-18" style="color: black;"> {{list?.leaveRequest}}</span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+              <div class="row justify-content-around align-items-center">
+                <div class="col-lg-5 col-10 mb-4" *ngFor="let list of Leave_Info_Admin ">
+                  <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget  border-0">
+                    <div class="icon-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-user-x">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="8" x2="23" y2="13"></line>
+                        <line x1="23" y1="8" x2="18" y2="13"></line>
+                      </svg>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="text-size-13 mb-0">{{list.leave_type}}</h4>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Leave
+                        <span class="float-right text-size-18" style="color: black;">{{list?.empOnLeave}}</span>
+                      </h5>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Requests <span
+                          class="float-right text-size-18" style="color: black;"> {{list?.leaveRequest}}</span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+              <div class="row justify-content-around align-items-center">
+                <div class="col-lg-5 col-10 mb-4" *ngFor="let list of Leave_Info_Admin ">
+                  <div class="card card-with-shadow dashboard-widgets dashboard-icon-widget  border-0">
+                    <div class="icon-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-user-x">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="18" y1="8" x2="23" y2="13"></line>
+                        <line x1="23" y1="8" x2="18" y2="13"></line>
+                      </svg>
+                    </div>
+                    <div class="card-body">
+                      <h4 class="text-size-13 mb-0">{{list.leave_type}}</h4>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Leave
+                        <span class="float-right text-size-18" style="color: black;">{{list?.empOnLeave}}</span>
+                      </h5>
+                      <h5 class="text-muted text-size-13 mb-0">Employee On Requests <span
+                          class="float-right text-size-18" style="color: black;"> {{list?.leaveRequest}}</span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3">
+        <div class="card card-with-shadow border-0 h-100 min-height-350 weekOffTable">
+          <div class="card-header bg-transparent p-primary d-flex justify-content-between align-items-center">
+            <h5 class="card-title text-capitalize mb-0" style="font-size:1.25rem;">People on Weekoff</h5>
+          </div>
+
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="fullName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="text-capitalize">{{row.fullName}}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="from">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>From Date</th>
+              <td mat-cell *matCellDef="let row">{{row.from_Date | date:'dd/MM/yyyy'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="to">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>To Date</th>
+              <td mat-cell *matCellDef="let row">{{row.to_Date | date:'dd/MM/yyyy'}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- Employee dashbaord -->
+  <div *ngIf="IsManagerAndEmployee()">
+    <div class="user-profile mb-primary">
+      <div class="card card-with-shadow py-5 border-0" style="min-height: 220px;">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-5">
+            <div class="media border-right px-5 pr-xl-5 pl-xl-0 user-header-media align-items-center">
+              <div class="profile-pic-wrapper">
+                <div class="custom-image-upload-wrapper circle mx-xl-auto">
+                  <div class="image-area d-flex">
+                    <span *ngIf="this.gender=='Male'">
+                      <img src="../../../assets/Male-avatar.png" alt="image" class="img-fluid mx-auto my-auto">
+                    </span>
+                    <span *ngIf="this.gender=='Female'">
+                      <img src="../../../assets/Female-avatar.png" alt="image" class="img-fluid mx-auto my-auto">
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="media-body user-info-header">
+                <h4 style="margin:0;">Hi, {{full_Name}}</h4>
+                <p class="text-muted mb-0">
+                  {{RoleName}}
+                </p>
+                <p class="text-muted mb-0">
+                  User-Id {{User_Id}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-7">
+            <div class="user-details px-5 px-sm-5 px-md-5 px-lg-0 px-xl-0 mt-5 mt-sm-5 mt-md-0 mt-lg-0 mt-xl-0">
+              <div class="row align-items-center justify-content-center">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                  <div class="border-right custom">
+                    <div class="media">
+                      <div class="align-self-center mr-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-briefcase">
+                          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16">
+                          </path>
+                        </svg></div>
+                      <div class="media-body">
+                        <p class="text-muted mb-0">
+                          Department
+                        </p>
+                        <p class="mb-0">
+                          {{DepartmentName?.department == null ? "Not added yet" : DepartmentName.department}}
+
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                  <div class="media mb-0 mb-xl-0">
+                    <div class="align-self-center mr-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="feather feather-calendar">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2">
+                        </rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg></div>
+                    <div class="media-body">
+                      <p class="text-muted mb-0">
+                        Joining date
+                      </p>
+                      <p class="mb-0">
+                        {{DepartmentName?.date_Of_Joining==null ? "Not added yet" : DepartmentName?.date_Of_Joining |
+                        date}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-9 mb-4 mb-md-0">
+        <div class="card card-with-shadow border-0 h-100 min-height-300">
+          <div class="card card-with-shadow border-0 h-100 min-height-350">
+            <div class="card-header bg-transparent p-primary d-flex justify-content-between align-items-center">
+              <span *ngIf="this.RoleName=='Manager'">
+                <h5 class="card-title text-capitalize mb-0" style="font-size:1.25rem;">Manager's statistics</h5>
+              </span>
+              <span *ngIf="this.RoleName=='Employee'">
+                <h5 class="card-title text-capitalize mb-0" style="font-size:1.25rem;">Emplopyee's statistics</h5>
+              </span>
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  Employee Leave
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                    aria-controls="pills-home" aria-selected="true">Today</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                  <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                    aria-controls="pills-profile" aria-selected="false">This week</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                  <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                    aria-controls="pills-contact" aria-selected="false">This Month</a>
+                </li> -->
+              </ul>
+            </div>
+            <div class="tab-content" id="pills-tabContent">
+              <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+                <div class="row">
+                  <div class="col-lg-6" *ngFor="let list of LeaveInfo_employee">
+                    <div class="card card-with-shadow border-0">
+                      <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                          <h2 class="mb-0">{{list.leavePending}}</h2>
+                          <h5 class="text-muted text-size-13 mb-0">{{list.leave_type}}</h5>
+                        </div>
+                        <div>
+                          <div class="mb-2">
+                            <span class="d-flex align-items-center">
+                              <div class="width-13 height-13 radius-2 bg-brand-color margin-right-5"></div>
+                              <p class="text-size-12 mb-0 text-capitalize">allowedLeave - <b>{{list.allowedLeave}}</b>
+                              </p>
+                            </span>
+                            <span class="d-flex align-items-center">
+                              <div class="width-13 height-13 radius-2 bg-success margin-right-5"></div>
+                              <p class="text-size-12 mb-0 text-capitalize">leavePending - <b>{{list.leavePending}}</b>
+                              </p>
+                            </span>
+                            <span class="d-flex align-items-center">
+                              <div class="width-13 height-13 radius-2 bg-warning margin-right-5"></div>
+                              <p class="text-size-12 mb-0 text-capitalize">leaveUsed - <b>{{list.leaveUsed}}</b>
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="tab-pane fade show " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-10 mb-4">
+                    Today
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-10 mb-4">
+                    This week
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-10 mb-4">
+                    This Month
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <div *ngIf="LeaveInfo_employee_length==0" class="text-center mt-5">
+              <h2 class="text-muted text-2x">You don't have any Leave </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

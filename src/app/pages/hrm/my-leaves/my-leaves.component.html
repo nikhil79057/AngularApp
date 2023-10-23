@@ -1,0 +1,1016 @@
+<div class="content-wrapper">
+  <div class="row justify-content-between mb-5">
+    <div class="col-md-3 col-12 mb-2">
+      <h2>Applied Leave</h2>
+    </div>
+
+    <div class="col-md-3 col-10 mb-4" *ngIf="IsAdmin()">
+      <select class="form-control" (change)="selectStatus($event.target.value)">
+        <option selected disabled>--Select--</option>
+        <option
+          *ngFor="let obj of _LeaveStatus"
+          value="{{ obj?.lookup_Value }}"
+        >
+          {{ obj?.lookup_Name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-4 col-12 mb-2 text-center">
+      <div class="mx-2 single-filter single-search-wrapper">
+        <div
+          class="form-group form-group-with-search d-flex align-items-center"
+        >
+          <span class="form-control-feedback">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-search"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input
+            type="text"
+            placeholder="Search"
+            class="form-control"
+            (keyup)="applyFilter($event.target.value)"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3 mx-3 float-md-right float-right">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          (click)="Openmodel()"
+          *ngIf="IsEmployee()"
+        >
+          Apply Leave
+        </button>
+      </div>
+
+      <div class="mb-3 mx-3 float-md-right float-right">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="export()"
+          *ngIf="IsAdminandManager()"
+        >
+          Export to Xl
+        </button>
+      </div>
+      <div class="mb-3 mx-3 float-md-right float-right">
+        <input
+          class="btn btn-primary"
+          *ngIf="IsAdminandManager()"
+          type="button"
+          value="Export to PDF"
+          id="element-to-hide"
+          data-html2canvas-ignore="true"
+          (click)="captureScreen()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body p-0" id="contentToConvert">
+    <div class="datatable" style="max-width:100%; overflow-x: scroll;">
+      <div>
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="Profile">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Profile</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="d-inline-flex" >
+                <div
+                  class="media align-items-center min-width-200"
+                  table-id="leave-request-table"
+                >
+                  <div class="avatars-w-50">
+                    <div class="no-img rounded-circle text-capitalize">
+                      {{ row.fullName | slice : 0 : 1 }}
+                    </div>
+                    <span class="status bg-success"></span>
+                  </div>
+                  <div class="media-body ml-3 text-capitalize">
+                    <a style="margin: bottom 1rem">{{ row.fullName }}</a>
+                  </div>
+                </div>
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Date-&-time">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Date & time
+            </th>
+            <td mat-cell *matCellDef="let row" class="DateTime text-center" style="padding-right: 15px" >
+              <span *ngIf="row.leave_Sub_Type == 'singleday'">
+                <span class="text-muted"> </span>
+                {{ row.from_Date | date : "dd/MM/yyyy" }}
+              </span>
+              <span *ngIf="row.leave_Sub_Type == 'multiday'">
+                <span class="text-muted"></span>
+                {{ row.from_Date | date : "dd/MM/yyyy" }} - <br/>
+                <span class="text-muted"></span>
+                {{ row.to_Date | date : "dd/MM/yyyy" }}
+              </span>
+              <span *ngIf="row.leave_Sub_Type == 'halfday'">
+                <span class="text-muted">({{ row.hourType }})</span>
+                <span> of </span> {{ row.from_Date | date : "dd/MM/yyyy" }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Leave-duration">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Leave duration
+            </th>
+            <td mat-cell *matCellDef="let row" >
+              <span *ngIf="row.leave_Sub_Type == 'singleday'"
+                >{{ row.amount }} Day</span
+              >
+              <span *ngIf="row.leave_Sub_Type == 'multiday'"
+                >{{ row.amount }} Day</span
+              >
+              <span *ngIf="row.leave_Sub_Type == 'halfday'">{{
+                row.hourType
+              }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="leave_Type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Leave Type
+            </th>
+            <td mat-cell *matCellDef="let row" style="padding-right: 12px">
+              <span class="text-capitalize">{{ row.leave_Type }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let row" style="width: 100px;">
+              <span
+                *ngIf="row.status == 'Pending'"
+                class="badge badge-pill badge-warning"
+                style="color: #fff"
+                >{{ row.status }}</span
+              >
+              <span
+                *ngIf="row.status == 'Approved'"
+                class="badge badge-pill badge-success"
+                style="color: #fff"
+                >{{ row.status }}</span
+              >
+              <span
+                *ngIf="row.status == 'Rejected'"
+                class="badge badge-pill badge-danger"
+                style="color: #fff"
+                >{{ row.status }}</span
+              >
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td mat-cell *matCellDef="let row" class="actionStatus">
+              <div class="d-flex  justify-content-evenly">
+                <button
+                  class="btn btn-success mb-2 ml-2"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  rel="tooltip"
+                  (click)="Approve(row.id)"
+                  *ngIf="
+                    IsAdminandManager() &&
+                    row.status === 'Pending' &&
+                    this.UserId != row.user_Id
+                  "
+                  title="Approve"
+                  
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0,0,256,256"
+                    width="15px"
+                    height="15px"
+                    fill-rule="nonzero"
+                  >
+                    <g
+                      fill="#ffffff"
+                      fill-rule="nonzero"
+                      stroke="none"
+                      stroke-width="1"
+                      stroke-linecap="butt"
+                      stroke-linejoin="miter"
+                      stroke-miterlimit="10"
+                      stroke-dasharray=""
+                      stroke-dashoffset="0"
+                      font-family="none"
+                      font-weight="none"
+                      font-size="none"
+                      text-anchor="none"
+                      style="mix-blend-mode: normal"
+                    >
+                      <g transform="scale(8.53333,8.53333)">
+                        <path
+                          d="M15,3c-6.627,0 -12,5.373 -12,12c0,6.627 5.373,12 12,12c6.627,0 12,-5.373 12,-12c0,-2.17938 -0.59,-4.21686 -1.60547,-5.97852l-11.24805,11.24609c-0.187,0.187 -0.44103,0.29297 -0.70703,0.29297c-0.265,0 -0.52003,-0.10497 -0.70703,-0.29297l-4.45313,-4.45312c-0.391,-0.391 -0.391,-1.02306 0,-1.41406c0.391,-0.391 1.02306,-0.391 1.41406,0l3.74609,3.74609l10.80078,-10.80078c-2.201,-2.655 -5.52223,-4.3457 -9.24023,-4.3457zM24.24023,7.3457c0.43165,0.52058 0.81351,1.08435 1.1543,1.67383l2.3125,-2.3125c0.391,-0.392 0.391,-1.02306 0,-1.41406c-0.391,-0.391 -1.02306,-0.391 -1.41406,0z"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg></button
+                >
+
+                <button
+                  class="btn btn-danger mb-2 ml-2"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  rel="tooltip"
+                  (click)="Rejected(row.id)"
+                  *ngIf="
+                    IsAdminandManager() &&
+                    this.UserId != row.user_Id &&
+                    row.status === 'Pending'
+                  "
+                  title="Reject"
+                >
+                  <svg
+                    fill="#fff"
+                    width="15px"
+                    height="15px"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    id="cross-circle"
+                    class="icon glyph"
+                  >
+                    <path
+                      d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm3.71,12.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L12,13.42,9.71,15.71a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L10.58,12,8.29,9.71A1,1,0,0,1,9.71,8.29L12,10.58l2.29-2.29a1,1,0,0,1,1.42,1.42L13.42,12Z"
+                    ></path>
+                  </svg></button
+                >
+
+                <button
+                  class="btn btn-primary mb-2 ml-2"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  rel="tooltip"
+                  (click)="getById(row.id)"
+                  title="View"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#fff"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M15 12c0 1.654-1.346 3-3 3s-3-1.346-3-3 1.346-3 3-3 3 1.346 3 3zm9-.449s-4.252 8.449-11.985 8.449c-7.18 0-12.015-8.449-12.015-8.449s4.446-7.551 12.015-7.551c7.694 0 11.985 7.551 11.985 7.551zm-7 .449c0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5 5-2.243 5-5z"
+                    />
+                  </svg></button
+                >
+
+                <button
+                  class="btn btn-danger mb-2 ml-2"
+                  (click)="delete(row.id)"
+                  *ngIf="row.status === 'Pending' && this.UserId == row.user_Id"
+                  title="Delete"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+
+                <a
+                class="btn btn-success mb-2 ml-2"
+                  target="_blank"
+                  href="https://wa.me/+600{{ row.mobile }}?text="
+                  rel="tooltip"
+                  title="whatsapp now"
+                  *ngIf="IsAdminandManager()"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 64 64"
+                    width="20px"
+                    height="20px"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                  >
+                    <path
+                      fill="url(#AhngXQ8Zf2VLA52L6fLwQa)"
+                      d="M59,21h1.5c2.168,0,3.892-1.998,3.422-4.243C63.58,15.122,62.056,14,60.385,14L53,14 c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2h3.385c1.67,0,3.195-1.122,3.537-2.757C60.392,4.998,58.668,3,56.5,3H34.006H32.5h-24 C6.575,3,5,4.575,5,6.5S6.575,10,8.5,10H10c1.105,0,2,0.895,2,2c0,1.105-0.895,2-2,2l-5.385,0c-1.67,0-3.195,1.122-3.537,2.757 C0.608,19.002,2.332,21,4.5,21H18v12L4.615,33c-1.67,0-3.195,1.122-3.537,2.757C0.608,38.002,2.332,40,4.5,40H5 c1.105,0,2,0.895,2,2c0,1.105-0.895,2-2,2H4.5c-2.168,0-3.892,1.998-3.422,4.243C1.42,49.878,2.945,51,4.615,51H10 c1.105,0,2,0.895,2,2c0,1.105-0.895,2-2,2l-1.385,0c-1.67,0-3.195,1.122-3.537,2.757C4.608,60.002,6.332,62,8.5,62h22.494H32.5h23 c1.925,0,3.5-1.575,3.5-3.5S57.425,55,55.5,55H55c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2h4.385c1.67,0,3.195-1.122,3.537-2.757 C63.392,45.998,61.668,44,59.5,44H47V32h12.385c1.67,0,3.195-1.122,3.537-2.757C63.392,26.998,61.668,25,59.5,25H59 c-1.105,0-2-0.895-2-2C57,21.895,57.895,21,59,21z"
+                    />
+                    <path
+                      fill="#fff"
+                      d="M29.947,7.082C17.733,8.057,7.89,18.032,7.059,30.256c-0.309,4.552,0.603,8.865,2.44,12.647 L6.134,55.69c-0.507,1.926,1.25,3.683,3.176,3.176l13.598-3.579c3.66,1.43,7.733,2.034,11.999,1.546 c11.801-1.349,21.144-11.084,22.021-22.93C58.067,18.55,45.318,5.855,29.947,7.082z"
+                    />
+                    <linearGradient
+                      id="AhngXQ8Zf2VLA52L6fLwQb"
+                      x1="32.001"
+                      x2="32.001"
+                      y1="11"
+                      y2="53.984"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop offset="0" stop-color="#00d772" />
+                      <stop offset=".996" stop-color="#00b26e" />
+                      <stop offset="1" stop-color="#00b26e" />
+                    </linearGradient>
+                    <path
+                      fill="url(#AhngXQ8Zf2VLA52L6fLwQb)"
+                      d="M13.556,43.205c0.122-0.462,0.074-0.952-0.135-1.382l-0.323-0.666 c-1.59-3.274-2.298-6.95-2.047-10.629c0.698-10.274,8.959-18.64,19.215-19.458C30.843,11.023,31.426,11,32,11 c5.817,0,11.428,2.447,15.391,6.715c4.018,4.326,5.988,9.97,5.55,15.894c-0.73,9.854-8.678,18.129-18.486,19.251 C33.638,52.953,32.812,53,32,53l0,0c-2.624,0-5.192-0.484-7.635-1.438l-0.607-0.237c-0.394-0.154-0.827-0.179-1.237-0.071 l-10.25,2.697c-0.741,0.195-1.416-0.481-1.222-1.222L13.556,43.205z"
+                    />
+                    <path
+                      fill="#fff"
+                      fill-rule="evenodd"
+                      d="M25.611,21.115c-0.479-1.06-0.983-1.082-1.44-1.101 C23.798,19.999,23.372,20,22.946,20c-0.426,0-1.119,0.16-1.706,0.797S19,22.974,19,26.107s2.292,6.16,2.612,6.584 c0.32,0.424,4.426,7.058,10.928,9.611c5.403,2.121,6.503,1.699,7.677,1.593c1.173-0.106,3.785-1.539,4.318-3.026 s0.533-2.761,0.374-3.026c-0.16-0.266-0.587-0.424-1.226-0.744c-0.295-0.147-1.928-0.949-3.717-1.813 c-0.826-0.399-1.818-0.186-2.405,0.519c-0.242,0.29-0.708,0.848-1.229,1.469c-0.592,0.706-1.587,0.917-2.415,0.513 c-1.27-0.62-3.141-1.649-4.601-2.945c-1.046-0.928-2.253-2.566-3.04-3.711c-0.529-0.77-0.462-1.8,0.169-2.489 c0.279-0.305,0.561-0.613,0.765-0.851c0.487-0.569,0.617-1.36,0.334-2.054C26.964,24.321,25.998,21.971,25.611,21.115z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell">No data matching the filter</td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[30, 60, 90]"
+          aria-label="Select page of users"
+        ></mat-paginator>
+      </div>
+      <!-- </div> -->
+      <div class="mt-primary">
+        <div>
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <nav style="display: none">
+              <ul
+                class="pagination justify-content-center justify-content-md-end mb-0"
+              >
+                <li class="page-item disabled">
+                  <a aria-label="Previous" class="page-link border-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-arrow-left"
+                    >
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link border-0 active disabled">1</a>
+                </li>
+                <li class="page-item disabled">
+                  <a
+                    aria-label="Next"
+                    class="page-link border-0 align-content-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-arrow-right menu-arrow"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    role="dialog"
+    data-backdrop="static" 
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    style="background: #0000008c"
+    *ngIf="ModalOpen"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Apply Leave</h4>
+          <button
+            type="button"
+            aria-label="Close"
+            data-dismiss="modal"
+            class="close outline-none"
+            (click)="cancel()"
+          >
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-x"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="modal-body text-left p-xl">
+          <form [formGroup]="timeoffForm" enctype="multipart/form-data">
+            <div class="form-group mb-5">
+              <label>Leave type</label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="leave_Type"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+              >
+                <option
+                  *ngFor="let obj of _LeaveType"
+                  value="{{ obj?.lookup_Value }}"
+                >
+                  {{ obj?.lookup_Name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group mb-5">
+              <div class="row mb-4">
+                <div class="col-md-12 col-12">
+                  <div
+                    class="nav nav-tabs d-flex justify-content-around align-items-center"
+                    id="myTab"
+                    role="tablist"
+                  >
+                    <div class="form-check mb-3 mt-2" (click)="singleday()">
+                      <input
+                        class="form-check-input active"
+                        id="home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#home-tab-pane"
+                        type="radio"
+                        role="tab"
+                        aria-controls="home-tab-pane"
+                        aria-selected="true"
+                        name="leave_Sub_Type"
+                        formControlName="leave_Sub_Type"
+                        value="singleday"
+                        checked
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      />
+                      <label
+                        for="home-tab"
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      >
+                        Single Day
+                      </label>
+                    </div>
+
+                    <div class="form-check mb-3 mt-1" (click)="Multiday()">
+                      <input
+                        class="form-check-input"
+                        id="profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile-tab-pane"
+                        type="radio"
+                        role="tab"
+                        aria-controls="profile-tab-pane"
+                        aria-selected="false"
+                        name="leave_Sub_Type"
+                        formControlName="leave_Sub_Type"
+                        value="multiday"
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      />
+                      <label
+                        for="profile-tab"
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      >
+                        Multi Day
+                      </label>
+                    </div>
+
+                    <div class="form-check mb-3 mt-1" (click)="Halfday()">
+                      <input
+                        class="form-check-input"
+                        id="contact-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#contact-tab-pane"
+                        type="radio"
+                        role="tab"
+                        aria-controls="contact-tab-pane"
+                        aria-selected="false"
+                        name="leave_Sub_Type"
+                        formControlName="leave_Sub_Type"
+                        value="halfday"
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      />
+                      <label
+                        for="contact-tab"
+                        [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                      >
+                        Half Day
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="tab-content" id="myTabContent">
+                    <div
+                      *ngIf="single_day"
+                      class="tab-pane fade show active"
+                      id="home-tab-pane"
+                      role="tabpanel"
+                      aria-labelledby="home-tab"
+                      tabindex="0"
+                    >
+                      <div>
+                        <label class="show active">Date</label>
+                        <small class="text-muted font-italic"></small>
+                        <input
+                          [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                          type="date"
+                          formControlName="from_Date"
+                          class="form-control"
+                          (change)="calculateAdavance()"
+                          value="{{ dates?.from_Date | date : 'yyyy-MM-dd' }}"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="multi_day"
+                      class="tab-pane fade show active"
+                      id="profile-tab-pane"
+                      role="tabpanel"
+                      aria-labelledby="profile-tab"
+                      tabindex="0"
+                    >
+                      <div class="row justify-content-between">
+                        <div class="col-md-6 col-6">
+                          <div>
+                            <label class="">From Date</label>
+                            <small class="text-muted font-italic"></small>
+                            <input
+                              [attr.disabled]="
+                                timeoffForm.value.id > 0 ? '' : null
+                              "
+                              type="date"
+                              formControlName="from_Date"
+                              class="form-control"
+                              id="floatingInput"
+                              value="{{
+                                dates?.from_Date | date : 'yyyy-MM-dd'
+                              }}"
+                              (change)="calculateAdavance()"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-6">
+                          <div>
+                            <label class="">To Date</label>
+                            <small class="text-muted font-italic"></small>
+                            <input
+                              [attr.disabled]="
+                                timeoffForm.value.id > 0 ? '' : null
+                              "
+                              type="date"
+                              formControlName="to_Date"
+                              class="form-control"
+                              value="{{ dates?.to_Date | date : 'yyyy-MM-dd' }}"
+                              (change)="calculateAdavance()"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="Half_day"
+                      class="tab-pane fade show active"
+                      id="contact-tab-pane"
+                      role="tabpanel"
+                      aria-labelledby="contact-tab"
+                      tabindex="0"
+                    >
+                      <div class="row align-items-center">
+                        <div class="col-md-6 col-6">
+                          <div>
+                            <label class="">Date</label>
+                            <input
+                              [attr.disabled]="
+                                timeoffForm.value.id > 0 ? '' : null
+                              "
+                              type="date"
+                              formControlName="from_Date"
+                              class="form-control"
+                              value="{{
+                                dates?.from_Date | date : 'yyyy-MM-dd'
+                              }}"
+                              (change)="calculateAdavance()"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-6">
+                          <div class="row mt-4">
+                            <div class="col-md-6 col-6">
+                              <div class="form-check">
+                                <input
+                                  [attr.disabled]="
+                                    timeoffForm.value.id > 0 ? '' : null
+                                  "
+                                  class="form-check-input"
+                                  type="radio"
+                                  name="hourType"
+                                  id="first"
+                                  value="First-Half"
+                                  formControlName="hourType"
+                                />
+                                <label class="text-muted" for="first" checked>
+                                  First half
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-6">
+                              <div class="form-check">
+                                <input
+                                  [attr.disabled]="
+                                    timeoffForm.value.id > 0 ? '' : null
+                                  "
+                                  class="form-check-input"
+                                  type="radio"
+                                  name="hourType"
+                                  id="last"
+                                  value="Second-half"
+                                  formControlName="hourType"
+                                />
+                                <label class="text-muted" for="last">
+                                  Last half
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-5">
+              <label class="">Leave Duration</label>
+              <input
+                type="number"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+                formControlName="amount"
+                class="form-control"
+                readonly
+              />
+            </div>
+            <div class="form-group mb-5">
+              <label for="exampleFormControlTextarea1">
+                Remark
+                <span
+                  class="text-danger"
+                  *ngIf="timeoffForm.value.leave_Type === 'Emergency_Leave'"
+                  >*</span
+                >
+                <span
+                  class="text-muted"
+                  *ngIf="timeoffForm.value.leave_Type !== 'Emergency_Leave'"
+                >
+                  (Optional)
+                </span>
+                <span
+                  class="text-muted"
+                  *ngIf="timeoffForm.value.leave_Type === 'Emergency_Leave'"
+                >
+                  (Minimum 20 characters)
+                </span>
+              </label>
+              <textarea
+                id="exampleFormControlTextarea1"
+                rows="3"
+                formControlName="remark"
+                placeholder="Add reason note here"
+                *ngIf="timeoffForm.value.leave_Type !== 'Emergency_Leave'"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+              ></textarea>
+
+              <textarea
+                id="exampleFormControlTextarea1"
+                rows="3"
+                formControlName="remark"
+                placeholder="Add reason note here"
+                minlength="20"
+                *ngIf="timeoffForm.value.leave_Type === 'Emergency_Leave'"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+              ></textarea>
+            </div>
+
+            <div class="form-group mb-5" *ngIf="IsAdmin()">
+              <label class="">Leave Status</label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect2"
+                formControlName="status"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+              >
+                <option
+                  *ngFor="let obj of _LeaveStatus"
+                  value="{{ obj?.lookup_Value }}"
+                >
+                  {{ obj?.lookup_Name }}
+                </option>
+              </select>
+            </div>
+
+            <div
+              class="form-group mb-5"
+              *ngIf="
+                IsAdmin() ||
+                this.LeaveStatus == 'Approved' ||
+                this.LeaveStatus == 'Rejected'
+              "
+            >
+              <label class="">Admin note</label>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                formControlName="adminNote"
+                placeholder="Admin note here"
+                [attr.disabled]="timeoffForm.value.id > 0 ? '' : null"
+              ></textarea>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cancel()"
+              >
+                <span>Cancel</span></button
+              >&nbsp;&nbsp;
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addLeave()"
+                [attr.disabled]="AttachmentValue == true ? '' : null"
+              >
+                <span>Submit</span>
+              </button>
+            </div>
+          </form>
+
+          <div *ngIf="this.leaveId > 0">
+            <h1>Attachment Area <span class="text-muted">(optional)</span></h1>
+            <form [formGroup]="AttachmentForm" enctype="multipart/form-data">
+              <div class="form-group">
+                <div class="row align-items-center">
+                  <div class="col-md-5 col-5">
+                    <label class="">Attachment Name</label>
+                    <input
+                      class="form-control"
+                      formControlName="attachmentName"
+                      [attr.disabled]="
+                        timeoffForm.value.status == 'Approved' ||
+                        timeoffForm.value.status == 'Rejected'
+                          ? ''
+                          : null
+                      "
+                    />
+                  </div>
+                  <div class="col-md-5 col-5">
+                    <label class="">Attachments</label>
+                    <input
+                      type="file"
+                      class="form-control"
+                      style="opacity: 1 !important"
+                      formControlName="attachmentUrl"
+                      (change)="handleFileInput($event.target.files)"
+                      [attr.disabled]="
+                        timeoffForm.value.status == 'Approved' ||
+                        timeoffForm.value.status == 'Rejected'
+                          ? ''
+                          : null
+                      "
+                    />
+                  </div>
+                  <div class="col-md-2 col-2 mt-3">
+                    <label></label>
+                    <button
+                      type="button"
+                      class="btn btn-primary form-control"
+                      (click)="saveAttatchment()"
+                      [attr.disabled]="
+                        timeoffForm.value.status == 'Approved' ||
+                        timeoffForm.value.status == 'Rejected'
+                          ? ''
+                          : null
+                      "
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div class="mat-elevation-z88">
+              <table
+                class="table"
+                mat-table
+                matSort
+                [dataSource]="dataSource1"
+                style="width: 100%"
+              >
+                <ng-container matColumnDef="attachmentName">
+                  <th mat-header-cell *matHeaderCellDef id="th1">
+                    Attachment Name
+                  </th>
+                  <td mat-cell *matCellDef="let element" style="padding: 12px">
+                    {{ element.attachmentName }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="attachmentUrl">
+                  <th mat-header-cell *matHeaderCellDef id="th1">
+                    Attachment Url
+                  </th>
+                  <td mat-cell *matCellDef="let element" style="padding: 12px">
+                    <a
+                      target="_blank"
+                      (click)="Attachment(element.attachmentUrl)"
+                      >{{ element.attachmentUrl }}</a
+                    >
+                    <span
+                      *ngIf="IsOnlyEmployee()"
+                      class="btn btn-danger float-md-right float-right"
+                      (click)="DeleteAtt(element.attachmentId)"
+                      >Delete</span
+                    >
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns1"
+                ></tr>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                (click)="cancel()"
+              >
+                Close</button
+              >&nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for approve and reject leave -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    role="dialog"
+    data-backdrop="static" 
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    style="background: #0000008c"
+    *ngIf="ModalOpen2"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="height: 500px">
+        <div class="modal-header">
+          <h4 class="modal-title">Leave Status</h4>
+          <button
+            type="button"
+            aria-label="Close"
+            data-dismiss="modal"
+            class="close outline-none"
+            (click)="cancel()"
+          >
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-x"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="modal-body text-left p-xl">
+          <form [formGroup]="timeoffForm" enctype="multipart/form-data">
+            <div class="form-group mb-5">
+              <label class="">Leave Status</label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect2"
+                formControlName="status"
+                [attr.disabled]="timeoffForm.value.id == 0 ? '' : null"
+              >
+                <option
+                  *ngFor="let obj of _LeaveStatus"
+                  value="{{ obj?.lookup_Value }}"
+                >
+                  {{ obj?.lookup_Name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group mb-5">
+              <label>{{
+                this.roleid == 0 || this.roleid == 1
+                  ? "Admin Note"
+                  : "Manager Note"
+              }}</label>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                formControlName="adminNote"
+                placeholder="Admin note here"
+                [attr.disabled]="timeoffForm.value.id == 0 ? '' : null"
+              ></textarea>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cancel()"
+              >
+                <span>Cancel</span></button
+              >&nbsp;&nbsp;
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addLeave()"
+              >
+                <span>Submit</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

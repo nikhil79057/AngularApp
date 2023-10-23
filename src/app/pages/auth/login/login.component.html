@@ -1,0 +1,76 @@
+<!-- New Ui -->
+<div class="container-fluid">
+  <div id="app">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-8">
+        <div class="back-image"> </div>
+      </div>
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 pl-md-0">
+        <div class="login-form d-flex align-items-center">
+          <form [formGroup]="loginForm" class="sign-in-sign-up-form w-100" autocomplete="off" aria-autocomplete="none">
+            <div class="text-center mb-4">
+              <img src="assets/Logo/Square.png" alt="" class="img-fluid logo">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-12">
+                <!-- <h4 class="text-center mb-0">Hi!</h4>  -->
+                <label class="text-center d-block">Login to your dashboard</label>
+              </div>
+            </div>
+
+            <div class="form-group" placeholder="Enter your email"><label class="">Email</label> <small
+                class="text-muted font-italic"></small>
+              <div>
+                <input type="email" formControlName="email" placeholder="Enter your email" 
+                  class="form-control" autocomplete="new-email">
+              </div>
+            </div>
+            <div class="form-group" placeholder="Enter your password" show-password="true">
+              <label>Password</label>
+              <small class="text-muted font-italic"></small>
+              <div>
+                <div class="form-group-with-icon">
+                  <input type="password" formControlName="password" placeholder="Enter your password"
+                    class="form-control  text-right-padding" autocomplete="new-password">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-12"><button type="submit" (click)="signin()"
+                  class="btn text-center d-inline-flex btn-block text-center btn-primary">
+                  <span class="w-100">
+                    Login
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div class="form-row justify-content-between text-start" style="margin-top: 26px;">
+              <div class="col-md-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember">
+                  <label class="form-check-label" for="remember">
+                    Remember me
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3"></div>
+              <div class="col-md-4 mb-5">
+                <i class=" i-con i-con-lock "><i></i></i>&nbsp;
+                <label>
+                  <a [routerLink]="['/ForgotPassword']" class="bluish-text">Forget Password?</a>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-12">
+                <p class="text-center mt-5 footer">
+                  Copyright @ {{year}} by 11 Square Solutions
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

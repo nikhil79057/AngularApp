@@ -1,0 +1,119 @@
+.qr-box-card {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 7px 24px;
+}
+#qr-img{
+    height:150px;
+    object-fit: contain;
+    margin:auto;
+    display: flex;
+}
+@media (max-width:769px) {
+    #qr-img {
+            height: 100px;
+        }
+}
+.content-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    background: var(--app-background-color);
+    padding: 2rem;
+    margin-top: 10%;
+    position: absolute;
+    left: 220px;
+    width: calc(100% - 230px);
+}
+@media (min-width: 200px) and (max-width: 1000px) {
+    .content-wrapper {
+        margin-top: 15%;
+        left: 0;
+        width: 100%;
+    }
+}
+.left-text{
+    font-size:40px;
+    color: #2896E0;
+    line-height: 3rem;
+}
+body {
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    background: #EDEDED;
+}
+.tip {
+    font-size: 20px;
+    margin: 40px auto 50px;
+    text-align: center;
+}
+.cont {
+    overflow: hidden;
+    position: relative;
+    max-width: 900px;
+    height: 100%;
+    margin: 0 auto 100px;
+    background: #fff;
+}
+.form {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 1.2s ease-in-out;
+    padding: 50px;
+}
+.sub-cont {
+    overflow: hidden;
+    position: absolute;
+    // left: 640px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    // padding-left: 260px;
+    background: #fff;
+    transition: transform 1.2s ease-in-out;
+}
+.cont.s--signup .sub-cont {
+    transform: translate3d(-640px, 0, 0);
+}
+.cont.s--signup .img__btn span.m--in {
+    transform: translateY(0);
+}
+.cont.s--signup .img__btn span.m--up {
+    transform: translateY(72px);
+}
+.welcome-text{
+font-size: 40px;
+    text-align: center;
+    color: #0069AF;
+}
+.welcome-text-para{
+font-size: 16px;
+    text-align: center;
+}
+.cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+}
+.form {
+    text-align: center;
+}
+.bshadow {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    height:500px;
+    width: 500px;
+}
+.bshadow > .qrcode > img {
+    height:500px !important;
+    width: 500px !important;
+  }
+.bshadow .qrcode img{
+    height:500px !important;
+    width: 500px !important;
+}
+body{
+    height: 100%;
+}
+.Grid-box{
+    height: 100vh;
+    display: grid;
+    place-content: center;
+}

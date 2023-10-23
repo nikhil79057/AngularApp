@@ -1,0 +1,163 @@
+<div class="content-wrapper">
+    <div class="row justify-content-between mb-5">
+        <div class="col-md-6 col-12 mb-2">
+            <h2>Time Dashboard</h2>
+        </div>
+        <div class="col-md-6 col-12 mb-2">
+            <!-- <div class="mx-2 single-filter single-search-wrapper">
+                <div class="form-group form-group-with-search d-flex align-items-center">
+                    <span class="form-control-feedback">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-search">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" placeholder="Search" class="form-control">
+                    <button routerLinkActive="active" routerLink="['/my-qr-code']" class="btn btn-primary mx-4" id="button-checkin">checkin</button>
+                </div>
+            </div> -->
+        </div>
+        <!-- <div class="col-sm-12 col-md-1"></div> -->
+    </div>
+    <div>
+        <!-- Table for checkin -->
+        <div class="card mb-4">
+            <div class="card-body table-body">
+                <!-- Grid row -->
+                 <!-- table for filter -->
+        <div class="row align-items-end mb-4">
+            <div class="col-lg-3 col-sm-6 p-1">
+              <span  >
+                <select
+                class="form-control text-black"
+                
+                id="exampleFormControlSelect2"
+                
+              >
+              <option value="" disabled selected>Download Report</option>
+                <option>CSV</option>
+                <option>Excel</option>
+                <option>PDF</option>
+              </select>
+              </span>
+            </div>
+         
+            <div class="col-lg-3 col-sm-6 p-2">
+              <span >
+                <label for="from" class="mx-3 label-text">Start Date:</label>
+                <input type="date" id="from" name="from"></span>
+            </div>
+            <div class="col-lg-3 col-sm-6 p-2">
+              <span >
+                <label for="to" class="mx-3 label-text">End Date:</label>
+                <input type="date" id="to" name="to">
+               
+            </span>
+            
+            </div>
+  
+          </div>
+  
+         
+                <!--Table-->
+                <table class="table table-striped">
+                    <!--Table head-->
+                    <!-- table for filter -->
+                   
+                    <!-- <thead class="border-bottom mb-ns" >
+                        <tr>
+                            <th class="label-text" style="padding-bottom: 1rem;">Activity</th>
+                            <th >
+                            <span class="custom-ns-th11">
+                                    <label for="from" class="mx-3 label-text">Start Date:</label>
+                                    <input type="date" id="from" name="from"></span>
+                                   
+                              
+                            </th>
+                            <th >
+                              <span class="custom-ns-th11">
+                                    <label for="to" class="mx-3 label-text">End Date:</label>
+                                    <input type="date" id="to" name="to">
+                                   
+                                </span>
+                            </th>
+                       <th>
+    <span class="form-group d-flex" id="n-32432">
+        <select
+          class="form-control"
+          id="exampleFormControlSelect2"
+          
+        >
+          <option>CSV</option>
+          <option>Excel</option>
+          <option>PDF</option>
+        </select>
+      </span>
+</th>
+                        </tr>
+                    </thead> -->
+                    <!-- table for filter end-->
+
+                    <thead class="border-bottom mt-4">
+                        <tr class="border-bottom">
+                            <th>Date</th>
+                            <th>Checked In</th>
+                            <th>Checked Out</th>
+                            <th>Status</th>
+                            <th>Hours</th>
+                        </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                        <tr>
+                            <td >10/13/2023 Fri</td>
+                            <td>10:06:00 AM</td>
+                            <td>07:00:00 PM</td>
+                            <td><button id="in-out-ns">In/Out</button></td>
+                            <td>08:54</td>
+                        </tr>
+                        <tr>
+                                                        <td>10/13/2023 Fri</td>
+
+                            <td>12:06:00 AM</td>
+                            <td>07:00:00 PM</td>
+                            <td><button id="in-out-ns">In/Out</button></td>
+                            <td>08:54</td>
+
+
+                        </tr>
+                        <tr>
+                                                        <td>10/13/2023 Fri</td>
+
+                            <td>01:06:00 AM</td>
+                            <td>07:00:00 PM</td>
+                            <td><button id="in-out-ns">In/Out</button></td>
+
+                            <td>08:54</td>
+
+                        </tr>
+                        <tr>
+                                                        <td>10/13/2023 Fri</td>
+
+                            <td>2:06:00 AM</td>
+                            <td>07:00:00 PM</td>
+                            <td><button id="in-out-ns">In/Out</button></td>
+
+                            <td>08:54</td>
+
+                        </tr>
+
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

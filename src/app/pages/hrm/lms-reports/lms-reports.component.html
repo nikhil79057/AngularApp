@@ -1,0 +1,183 @@
+<div class="content-wrapper">
+  <div class="row mb-5">
+    <div class="col-md-2 col-12">
+      <h2 class="m-0">Reports</h2>
+    </div>
+    <div class="col-md-3 col-12">
+      <h4 class="m-1 font-weight-bold">Employee</h4>
+      <select
+        class="form-control text-capitalize"
+        (change)="selectUsers($event.target.value)"
+      >
+        <option *ngFor="let Users of AllUsers" value="{{ Users.user_Id }}">
+          {{ Users?.full_Name }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-12">
+      <h4 class="m-1 font-weight-bold">From-Date</h4>
+      <input
+        type="date"
+        class="form-control"
+        (change)="selectFromDate($event.target.value)"
+      />
+    </div>
+    <div class="col-md-2 col-12">
+      <h4 class="m-1 font-weight-bold">To-Date</h4>
+      <input
+        type="date"
+        class="form-control"
+        (change)="selectToDate($event.target.value)"
+      />
+    </div>
+    <div class="col-md-2 col-12 mt-4">
+      <button class="btn btn-primary mt-3 float-right" (click)="ShowReport()">
+        View Report
+      </button>
+    </div>
+  </div>
+
+  <div class="reports" *ngIf="Show" id="contentToConvert">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Leave Report</h4>
+      </div>
+      <div class="modal-body custom-scrollbar undefined">
+        <div class="d-flex justify-content-center mb-primary">
+          <div class="text-center">
+            <img
+              src="../../../../assets/Logo/Square.jpeg"
+              alt="logo"
+              class="radius-5 mb-2"
+              style="max-height: 100px; max-width: 150px"
+            />
+            <h5 class="font-weight-bold">LMS Report</h5>
+          </div>
+        </div>
+        <div class="row mb-primary justify-content-between py-primary">
+          <div class="col-md-4 col-10 mb-4">
+            <div class="media align-items-center">
+              <div class="avatars-w-50">
+                <div>
+                  <div
+                    class="no-img rounded-circle data-letters text-capitalize"
+                  >
+                    {{ this.UserDetails?.full_Name | slice : 0 : 1 }}
+                  </div>
+                  <span class="status bg-success"></span>
+                </div>
+              </div>
+              <div class="media-body ml-3">
+                <a class="text-capitalize">{{ this.UserDetails?.full_Name }}</a>
+                <p class="text-muted font-size-90 mb-0">
+                  {{ this.UserDetails?.email }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-10 mb-4">
+            <p class="m-0">
+              Designation :
+              {{
+                this.UserDetails?.designation == ""
+                  ? "Not added yet"
+                  : this.UserDetails?.designation
+              }}
+            </p>
+            <p class="m-0">
+              Department :
+              {{
+                this.UserDetails?.department == ""
+                  ? "Not added yet"
+                  : this.UserDetails?.department
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="mb-primary mt-primary">
+          <div class="datatable">
+            <div>
+              <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="EmployeeName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Employee Name
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let row"
+                    class="datatable-td text-capitalize"
+                  >
+                    {{ row.first_Name }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="LeaveType">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Leave Type
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="text-capitalize">
+                    {{ row.leave_type }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="leaveUsed">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Leaves Used
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="text-capitalize">
+                    {{ row.leaveUsed }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="RemainingLeaves">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Remaining Leaves
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="text-capitalize">
+                    {{ row.leavePending }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="TotalLeaves">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Total Leaves
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="datatable-td">
+                    {{ row.allowedLeave }}
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="4">
+                    No data matching the filter
+                  </td>
+                </tr>
+              </table>
+
+              <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users">
+                            </mat-paginator> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input
+          class="btn btn-primary"
+          type="button"
+          value="Download"
+          id="element-to-hide"
+          data-html2canvas-ignore="true"
+          (click)="captureScreen()"
+        />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="scanner-box">
+<ngx-scanner-qrcode #action="scanner" class="scanner" [src]="'http://localhost:4200/assets/Logo/Square3.png'" (scanSuccess)="handleScanResult($event)"></ngx-scanner-qrcode>
+
+
+<!-- <div class="scan"></div>
+<div class="screen"></div>
+<div class="animation"></div> -->
+<!-- Loader -->
+<div class="loader" *ngIf="isLoading">
+  <p>Loading...</p>
+</div>
+</div>

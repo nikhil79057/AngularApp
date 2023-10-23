@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: rgb(212, 225, 246);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .content {
+        background-color: #fff;
+        width: 35%;
+        height: 60vh;
+        border-radius: 1rem;
+        padding: 1.5rem;
+    }
+
+    .title {
+        text-align: center;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        color: rgb(69, 68, 68);
+    }
+
+    .paragraph {
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .login {
+        text-align: center;
+    }
+
+    .line {
+        width: 40%;
+    }
+
+    .line2 {
+        width: 10%;
+    }
+
+    .login_title {
+        padding: 1rem;
+    }
+
+    .login_Btn {
+        border: none;
+        outline: none;
+        background-color: #94CA53;
+        color: #fff;
+        font-weight: bold;
+        padding: 1rem;
+        border-radius: 2rem;
+        margin-top: 1rem;
+    }
+
+    .Ng {
+        margin-top: 3rem;
+        text-align: center;
+        font-weight: bolder;
+    }
+
+    @media only screen and (min-width: 769px) and (max-width: 1024px) {
+        .content {
+            background-color: #fff;
+            width: 80%;
+            height: 57vh;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .title h1 {
+            font-size: 2rem;
+        }
+
+        .paragraph p {
+            font-size: 1.2rem;
+        }
+
+        .login p {
+            font-size: 1.2rem;
+        }
+
+        .Btn .login_Btn {
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+    }
+
+    @media only screen and (min-width: 481px) and (max-width: 768px) {
+        .content {
+            background-color: #fff;
+            width: 80%;
+            height: 68vh;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .title h1 {
+            font-size: 1.7rem;
+        }
+
+        .paragraph p {
+            font-size: 1.2rem;
+        }
+
+        .login p {
+            font-size: 1.2rem;
+        }
+
+        .Btn .login_Btn {
+            padding: 1.2rem;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+        }
+
+    }
+
+    @media screen and (min-width: 281px) and (max-width: 480px) {
+        .content {
+            background-color: #fff;
+            width: 80%;
+            height: 60vh;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            padding-bottom: 10px;
+        }
+
+        .title h1 {
+            font-size: 1.3rem;
+        }
+
+        .paragraph p {
+            font-size: 1rem;
+        }
+
+        .login p {
+            font-size: 1rem;
+        }
+
+        .Btn .login_Btn {
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="title">
+            <h1>There was a request to change your password!</h1>
+        </div>
+
+        <hr class="line">
+        <div class="login">
+            <p class="login_title">Your Login Id and Password</p>
+            <hr class="line2">
+            <span class="UserName">
+                <strong
+                    style="display: block;font-size: 13px; margin: 0 0 4px; color:rgba(0,0,0,.64); font-weight:normal;">Username:</strong>#EMAIL#
+            </span>
+            <br>
+            <br>
+            <span class="Password">
+                <strong
+                    style="display: block; font-size: 13px; margin: 24px 0 4px 0; font-weight:normal; color:rgba(0,0,0,.64);">Password:</strong>#PASSWORD#
+            </span>
+            <span>
+                <p>If you did not make this request then please ignore this email.
+
+                    </p>
+            </span>
+        </div>
+        <div class="Ng">
+            <a href="https://www.zoom2i.com" target="_blank"> &#169; zoom2i.com</a>
+        </div>
+</body>
+
+</html>

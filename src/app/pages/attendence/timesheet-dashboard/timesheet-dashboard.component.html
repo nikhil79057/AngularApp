@@ -1,0 +1,308 @@
+<div class="content-wrapper">
+  <div class="row justify-content-between mb-5">
+    <div class="col-md-6 col-12 mb-2">
+      <h2>Timesheet</h2>
+    </div>
+    <div class="col-md-6 col-12 mb-2"></div>
+    <!-- <div class="col-sm-12 col-md-1"></div> -->
+  </div>
+  <div>
+    <!-- Table for checkin -->
+    <div class="card mb-4">
+      <div class="card-body table-body">
+        <!-- Grid row -->
+         
+        <!--Table-->
+        <!-- table for filter -->
+        <div class="row align-items-end mb-4">
+          <div class="col-lg-3 col-sm-6 p-1">
+            <span  >
+              <select class="form-control" id="exampleFormControlSelect2">
+                <option>Daily</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
+              </select>
+            </span>
+          </div>
+          <div class="col-lg-3 col-sm-6 p-2">
+            <span >
+              <select class="form-control" id="exampleFormControlSelect2">
+                <option value="" disabled selected>Select Employee</option>
+                <option>Mark</option>
+                <option>Max</option>
+                <option>Robin</option>
+                <option>jhon</option>
+              </select>
+            </span>
+          </div>
+          <div class="col-lg-3 col-sm-6 p-2">
+            <span >
+              <label for="from" class="mx-3 label-text">Start Date:</label>
+              <input type="date" id="from" name="from"></span>
+          </div>
+          <div class="col-lg-3 col-sm-6 p-2">
+            <span >
+              <label for="to" class="mx-3 label-text">End Date:</label>
+              <input type="date" id="to" name="to">
+             
+          </span>
+          
+          </div>
+
+        </div>
+
+        <!-- table for filter end-->
+        <table class="table table-striped">
+          <!--Table head-->
+
+          <thead class="border-bottom mt-4">
+            <tr class="border-bottom">
+              <th>Projects</th>
+              <th>Mon Sep 21</th>
+              <th>Tue Sep 22</th>
+              <th>Wed Sep 23</th>
+              <th>Thu Sep 24</th>
+              <th>Fri Sep 25</th>
+              <th>Sat Sep 26</th>
+              <th>Sun Sep 27</th>
+              <th>Total</th>
+              <th>Status</th>
+
+            </tr>
+          </thead>
+          <!--Table head-->
+          <!--Table body-->
+          <tbody>
+            <tr>
+              <td>LMS Chapter 1</td>
+
+              <td > <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">08</button>
+
+              </td>
+
+              <td > <button id="time"  data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">06</button>
+
+              </td>
+
+              <td > <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">05</button>
+
+              </td>
+
+              <td > <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">01</button>
+
+              </td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">05</button>
+
+              </td>
+              <td>
+                <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">07</button>
+
+              </td>
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">08</button>
+
+
+              </td>
+
+              <td>40:00
+              </td>
+              <td><button id="in-out-ns" type="button" data-toggle="dropdown">Inprogress</button>
+                <div class="dropdown-menu dropdown-menu-right py-2 mt-1">
+                  <a class="dropdown-item px-4 py-2" data-toggle="modal"
+                       rel="tooltip" type="button" title="Edit">
+                     On hold
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                      type="button" title="Delete">
+                      Pending
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                      type="button" title="Delete">
+                      Inprogress
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                  type="button" title="Delete">
+                  Completed
+              </a>
+              </div>
+              </td>
+
+            </tr>
+            <tr>
+              <td>LMS Chapter 2</td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">08</button>
+
+              </td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">06</button>
+
+              </td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">05</button>
+
+              </td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">01</button>
+
+              </td>
+
+              <td> <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">05</button>
+
+              </td>
+              <td>
+                <button id="time" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()">07</button>
+
+              </td>
+              <td> <button id="time">08</button>
+
+
+              </td>
+
+              <td>40:00
+              </td>
+              <td><button id="in-out-ns" type="button" data-toggle="dropdown">Inprogress</button>
+                <div class="dropdown-menu dropdown-menu-right py-2 mt-1">
+                  <a class="dropdown-item px-4 py-2" data-toggle="modal"
+                       rel="tooltip" type="button" title="Edit">
+                     On hold
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                      type="button" title="Delete">
+                      Pending
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                      type="button" title="Delete">
+                      Inprogress
+                  </a>
+                  <a class="dropdown-item px-4 py-2" rel="tooltip"
+                  type="button" title="Delete">
+                  Completed
+              </a>
+              </div>
+              </td>
+
+            </tr>
+          </tbody>
+          <thead class="border-bottom mt-4">
+            <tr class="border-bottom">
+              <th>Total</th>
+
+              <th>16:00</th>
+              <th>12:00</th>
+              <th>10:00</th>
+              <th>02:00</th>
+              <th>10:00</th>
+              <th>14:00</th>
+              <th>16:00</th>
+              <th>22:00</th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <!--Table body-->
+        </table>
+        <!--Table-->
+        <!-- bottom-filters -->
+        <div class="row  justify-content-between pt-4">
+          <div class="col-lg-2">
+            <button class="btn outline-button" data-toggle="modal" data-target="#exampleModal" (click)="openmodel()"
+              id="button-checkin">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+              </svg>&nbsp;&nbsp; Add New
+            </button>
+          </div>
+          <div class="col-lg-2">
+            <button class="btn outline-button" data-toggle="modal" data-target="#exampleModal" id="button-checkin"
+              style="background-color: #0072be; color: #fff;">
+              Submit for Approval
+            </button>
+          </div>
+
+
+        </div>
+        <!-- bottom-filters-end -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="exampleModal" role="dialog" data-backdrop="static" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="background: #0000008c" *ngIf="ModalOpen">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="height: 300px">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Timesheet</h4>
+        <button type="button" aria-label="Close" data-dismiss="modal" class="close outline-none" (click)="cancel()">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-x">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="modal-body text-left p-xl">
+        <!-- addtimesheet-form -->
+        <form class="row justify-content-center  needs-validation" novalidate style="gap: 15px;">
+          <div class="col-md-5">
+            <label for="validationCustom01" class="form-label d-block">Projects</label>
+            <select class="form-select w-100" id="validationCustom04" required>
+              <option selected disabled value="">Select Project</option>
+              <option>LMS Chapter 1</option>
+              <option>LMS Chapter 2</option>
+              <option>LMS Chapter 3</option>
+              <option>LMS Chapter 4</option>
+
+
+            </select>
+
+          </div>
+          <div class="col-md-5">
+            <label for="validationCustom01" class="form-label d-block">Employees</label>
+            <select class="form-select w-100" id="validationCustom04" required>
+              <option selected disabled value="">Select Employees</option>
+              <option>Mark</option>
+              <option>Max</option>
+              <option>Robert</option>
+              <option>Alex</option>
+
+
+            </select>
+
+          </div>
+          <div class="col-md-5">
+            <label for="validationCustomUsername" class="form-label">Date/Time</label>
+            <div class="input-group has-validation">
+              <input type="datetime-local" class="w-100" id="datetime" name="datetime">
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <label for="validationCustom01" class="form-label d-block">Description</label>
+
+            <textarea name="write description" id="description" cols="30" rows="10" style="height:44px;"></textarea>
+          </div>
+
+        </form><br>
+        <!-- timesheet-form-end -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            <span>Cancel</span></button>&nbsp;&nbsp;
+          <button type="button" class="btn btn-primary">
+            <span>Submit</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

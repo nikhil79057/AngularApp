@@ -1,0 +1,446 @@
+<div class="content-wrapper">
+  <div class="row justify-content-between mb-5">
+    <div class="col-md-4 col-12 mb-2">
+      <h2>All Employees</h2>
+    </div>
+    <div class="col-md-4 col-12 mb-4" *ngIf="IsSuperAdmin()">
+      <div class="d-flex align-items-center">
+        <select class="form-control" (change)="selectEmployeeId($event)">
+          <option selected disabled>--Select--</option>
+          <option *ngFor="let obj of manager" value="{{ obj.user_Id }}">
+            {{ obj?.full_Name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-12 mb-2">
+      <div class="mx-2 single-search-wrapper">
+        <div
+          class="form-group form-group-with-search d-flex align-items-center"
+        >
+          <span class="form-control-feedback">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-search"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input
+            type="text"
+            placeholder="Search"
+            class="form-control"
+            (keyup)="applyFilter($event.target.value)"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3 mx-3 float-md-right float-right" *ngIf="IsSuperAdmin()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          (click)="addUser()"
+        >
+          Add Employee
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card border-0 bg-transparent Leave-Details">
+      <div class="card-body p-0">
+        <div class="datatable">
+          <div class="position-relative" style="min-height: 400px">
+            <div class="row" id="employee-table">
+              <div
+                class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-primary"
+                *ngFor="let list of EmpoloyeeListFiltered"
+              >
+                <div
+                  class="card card-with-shadow border-0 employee-preview-card"
+                >
+                  <div
+                    class="card-body position-relative d-flex flex-column justify-content-between"
+                  >
+                    <div
+                      class="dropdown options-dropdown position-absolute"
+                      *ngIf="IsSuperAdmin()"
+                    >
+                      <div>
+                        <span
+                          style="color: #019aff; cursor: pointer"
+                          (click)="loadEmployee(list.user_Id)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0,0,256,256"
+                            width="30px"
+                            height="30px"
+                            fill-rule="nonzero"
+                          >
+                            <g
+                              fill="#019aff"
+                              fill-rule="nonzero"
+                              stroke="none"
+                              stroke-width="1"
+                              stroke-linecap="butt"
+                              stroke-linejoin="miter"
+                              stroke-miterlimit="10"
+                              stroke-dasharray=""
+                              stroke-dashoffset="0"
+                              font-family="none"
+                              font-weight="none"
+                              font-size="none"
+                              text-anchor="none"
+                              style="mix-blend-mode: normal"
+                            >
+                              <g transform="scale(3.55556,3.55556)">
+                                <path
+                                  d="M38.406,22.234l11.36,11.36l-20.982,20.982l-12.876,4.307c-1.725,0.577 -3.367,-1.065 -2.791,-2.79l4.307,-12.876zM41.234,19.406l5.234,-5.234c1.562,-1.562 4.095,-1.562 5.657,0l5.703,5.703c1.562,1.562 1.562,4.095 0,5.657l-5.234,5.234z"
+                                ></path>
+                              </g>
+                            </g>
+                          </svg> </span
+                        >&nbsp;
+                        <span
+                          style="color: red; cursor: pointer"
+                          (click)="delete(list.user_Id)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0,0,256,256"
+                            width="23px"
+                            height="23px"
+                            fill-rule="nonzero"
+                          >
+                            <g
+                              fill="#f40909"
+                              fill-rule="nonzero"
+                              stroke="none"
+                              stroke-width="1"
+                              stroke-linecap="butt"
+                              stroke-linejoin="miter"
+                              stroke-miterlimit="10"
+                              stroke-dasharray=""
+                              stroke-dashoffset="0"
+                              font-family="none"
+                              font-weight="none"
+                              font-size="none"
+                              text-anchor="none"
+                              style="mix-blend-mode: normal"
+                            >
+                              <g transform="scale(8.53333,8.53333)">
+                                <path
+                                  d="M13,3c-0.26757,-0.00363 -0.52543,0.10012 -0.71593,0.28805c-0.1905,0.18793 -0.29774,0.44436 -0.29774,0.71195h-5.98633c-0.36064,-0.0051 -0.69608,0.18438 -0.87789,0.49587c-0.18181,0.3115 -0.18181,0.69676 0,1.00825c0.18181,0.3115 0.51725,0.50097 0.87789,0.49587h18c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587h-5.98633c0,-0.26759 -0.10724,-0.52403 -0.29774,-0.71195c-0.1905,-0.18793 -0.44836,-0.29168 -0.71593,-0.28805zM6,8v16c0,1.105 0.895,2 2,2h14c1.105,0 2,-0.895 2,-2v-16z"
+                                ></path>
+                              </g>
+                            </g>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <div class="avatars-w-50 mb-2 mx-auto d-inline-block">
+                        <div
+                          class="no-img rounded-circle data-letters text-capitalize"
+                        >
+                          {{ list.full_Name | slice : 0 : 1 }}
+                        </div>
+                        <span class="status bg-success"></span>
+                      </div>
+                      <p class="mb-2 text-capitalize" title="Name">
+                        <span style="cursor: pointer">{{
+                          list.full_Name
+                        }}</span>
+                      </p>
+                      <p
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Designation"
+                        class="mb-2 font-size-80 text-muted text-capitalize"
+                      >
+                        {{ list.lookupName }}
+                      </p>
+                      <p
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Email"
+                        class="mb-0 font-size-80 text-muted"
+                      >
+                        {{ list.email }}
+                      </p>
+                    </div>
+                    <div class="text-center mt-4" *ngIf="IsManager()">
+                      <a
+                        class="btn btn-transparent-primary rounded-pill"
+                        (click)="loadEmployee(list.user_Id)"
+                      >
+                        View details
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--! Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  style="display: block; background: #0000008c"
+  *ngIf="ModalOpen"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Employee</h4>
+        <button
+          type="button"
+          aria-label="Close"
+          data-dismiss="modal"
+          class="close outline-none"
+          (click)="cancel()"
+        >
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-x"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body custom-scrollbar undefined">
+        <form [formGroup]="EmployeeForm" autocomplete="off" >
+          <div class="form-group">
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class=""
+                    >First Name <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="First name"
+                    autocomplete="off"
+                    aria-autocomplete="none"
+                    class="form-control"
+                    formControlName="first_Name" autocomplete="new-password"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class=""
+                    >Last Name <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="Last name"
+                    autocomplete="off"
+                    aria-autocomplete="none"
+                    class="form-control"
+                    formControlName="last_Name" autocomplete="new-password"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class=""
+                    >Email <span class="text-danger">*</span>
+                  </label>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      autocomplete="off"
+                      aria-autocomplete="none"
+                      class="form-control"
+                      formControlName="email" autocomplete="new-password"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class=""
+                    >Password <span class="text-danger">*</span></label
+                  >
+                  <div>
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      autocomplete="off"
+                      aria-autocomplete="none"
+                      class="form-control"
+                      formControlName="password" autocomplete="new-first_Name"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" autocomplete="off">
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>User Type <span class="text-danger">*</span></label>
+                  <select
+                    class="form-control"
+                    formControlName="role_Id"
+                    (change)="selectuserType($event)" autocomplete="new-password"
+                  >
+                    <option
+                      *ngFor="let obj of userType"
+                      [value]="obj.lookup_Value"
+                    >
+                      {{ obj?.lookup_Name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- lookup_Value -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Manager <span class="text-danger">*</span></label>
+                  <select
+                    class="form-control"
+                    (change)="selectEmployee($event)"
+                    formControlName="managerId"
+                    required
+                    [attr.disabled]="
+                      this.userTypeVal == 1 || this.userTypeVal == 0 ? '' : null
+                    " autocomplete="new-password"
+                  >
+                    <option
+                      *ngFor="let obj of manager"
+                      value="{{ obj.user_Id }}"
+                    >
+                      {{ obj?.full_Name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Country Code </label>
+                  <div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="mx"
+                      disabled
+                      autocomplete="off"
+                      aria-autocomplete="none" autocomplete="new-password"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Mobile <span class="text-danger">*</span></label>
+                  <div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="mobile"
+                      autocomplete="off"
+                      aria-autocomplete="none" autocomplete="new-password"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label>Gender <span class="text-danger">*</span></label>
+                <div class="form-group">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="inlineRadio1"
+                      value="Male" 
+                      formControlName="gender" autocomplete="new-password"
+                      
+                    />
+                    <label class="form-check-label" for="inlineRadio1"
+                      >Male</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="inlineRadio2"
+                      value="Female"
+                      formControlName="gender" autocomplete="new-password"
+                    />
+                    <label class="form-check-label" for="inlineRadio2"
+                      >Female</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-secondary mr-2"
+          (click)="cancel()"
+        >
+          Cancel</button
+        >&nbsp;
+        <button
+          type="submit"
+          class="btn text-center btn-primary"
+          (click)="saveEmployee()"
+        >
+          <span class="w-100">Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
